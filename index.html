@@ -1,0 +1,260 @@
+<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Audio Player</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/animate.css">
+
+  <!--Audio Player Stuffs-->
+  <script src="scripts/jquery-3.3.1.min.js"></script>
+  <script src="scripts/mediaelement-and-player.min.js"></script>
+  <style>
+  .body{
+    background: #1e0f29;
+    min-height: 100vh;
+    padding-top: 15px;
+  }
+  .audio-player{
+    background: #1d1e1f;
+    border-radius: .25rem;
+    padding-top: 10px;
+  }
+
+  /*Hide HTML5 Player*/
+  #audio{
+    display: none;
+  }
+  /* Borders */
+  .border-bottom-left-right{
+    border-radius: 0 0 .25rem .25rem;
+  }
+  .border-top-right{
+    border-radius: 0 .25rem 0 0;
+  }
+  .border-top-left{
+    border-radius: .25rem 0 0 0;
+  }
+
+  /*General Player Styles*/
+    #audioPlayer #albumArt{
+      max-width: 100%
+    }
+  /*Progress Bar*/
+  #audio-progress, #audio-progress .progress-bar{
+    max-height: 17px;
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 768px){
+    #audio-progress, #audio-progress .progress-bar{
+      max-height: 10px;
+    }
+  }
+
+  .bg-grayed{
+    background: #535353;
+  }
+  .bg-gentle-blue{
+    background: #008ebb;
+  }
+
+  /*Loop Audio stuff*/
+  #loopAudio svg{
+    transition-duration: 750ms;
+    transition-timing-function: cubic-bezier(.33,.17,.27,1.3);
+  }
+
+  .audioTime{
+    text-align: center;
+    font-size: 1.6rem;
+    color: #fff;
+  }
+
+
+  </style>
+  <!--end Audio Player stuffs-->
+
+</head>
+<body>
+  <!--[if lt IE 8]>
+  <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <!-- Audio Player HTML -->
+
+
+  <div class="container-fluid body">
+
+    <audio controls="controls" id="audio">
+      <source src="audio/YourStories.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <div class="col-12 col-sm-10 col-md-5 col-lg-9 mx-auto ">
+
+    <div class="audio-player" id="audioPlayer">
+        <div class="row" style="margin-bottom: 7px;">
+            <div class="playPauseButtons col-6 col-sm-2" id="playPause" style="text-align: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="40px" height="40px" fill="#fff" id="play"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="40px" height="40px" fill="#fff" id="pause" style="display: none;"><path d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/></svg>
+            </div>
+            <div class="loopAudio col-6 col-sm-2" id="loopAudio" style="text-align: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.333 512" width="40px" height="40px" fill="#fff"><path d="M500.333 0h-47.411c-6.853 0-12.314 5.729-11.986 12.574l3.966 82.759C399.416 41.899 331.672 8 256.001 8 119.34 8 7.899 119.526 8 256.187 8.101 393.068 119.096 504 256 504c63.926 0 122.202-24.187 166.178-63.908 5.113-4.618 5.354-12.561.482-17.433l-33.971-33.971c-4.466-4.466-11.64-4.717-16.38-.543C341.308 415.448 300.606 432 256 432c-97.267 0-176-78.716-176-176 0-97.267 78.716-176 176-176 60.892 0 114.506 30.858 146.099 77.8l-101.525-4.865c-6.845-.328-12.574 5.133-12.574 11.986v47.411c0 6.627 5.373 12 12 12h200.333c6.627 0 12-5.373 12-12V12c0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <div class="audioTime col-12 col-sm-8">
+              <span id="audioPlaybackTime">0:00</span>/<span id="audioPlaybackDuration">0:00</span>
+            </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <div class="progress border-bottom-left-right" style="height:22px; padding: 0;" id="audio-progress">
+              <div class="progress-bar bg-gentle-blue" style="width:0; height:22px;" id="progressBar"></div>
+              <div class="progress-bar bg-grayed" style="width:0; height:22px;" id="progressUnderlay"></div>
+            </div>
+          </div>
+        </div>
+  </div>
+
+</div>
+
+  <!-- End Audio Player HTML -->
+
+  <!-- Audio Player Scripts -->
+  <script>
+    //Set Variables
+    var audio = document.getElementById("audio"),
+        playPos = audio.currentTime
+        playTime = playPos;
+
+        mouseOver = false;
+        newProgressWidth = 0;
+        isPlaying = false;
+        loop = false;
+        isLoaded = false;
+        duration = audio.duration;
+
+    //Set Audio length field once file has loaded
+    $( audio ).on('canplay canplaythrough',function(){
+      duration = audio.duration;
+
+      var minutes = Math.floor(duration / 60);
+      var seconds = Math.round(duration - minutes * 60);
+      if (seconds < 10){seconds = "0" + seconds};
+      var playDurationText = minutes + ":" + seconds;
+
+      $("#audioPlaybackDuration").html(playDurationText);
+    });
+    //Detect Position on Progress PlayBar and adjust progress width on mouseover
+    $('#audio-progress').mousemove(function (e) {
+      var offset = $(this).offset();
+      var relativeX = (e.pageX - offset.left);
+      var relativeY = (e.pageY - offset.top);
+      var width = $(this).width();
+
+      newProgressWidth = 100*(relativeX/width);
+      var tempPlayPos = playPos - newProgressWidth;
+      if (tempPlayPos > playPos){var tempPlayPos = playPos};
+      $("#progressBar", this).css("width", newProgressWidth + "%");
+      $("#progressUnderlay", this).css("width", tempPlayPos + "%");
+
+      var tempDuration = audio.duration * (relativeX/width);
+      if(tempDuration <= 0){tempDuration = 0;}
+      else if (tempDuration >= audio.duration) {tempDuration = audio.duration;};
+      var minutes = Math.floor(tempDuration / 60);
+      var seconds = Math.round(tempDuration - minutes * 60);
+      if (seconds < 10){seconds = "0" + seconds};
+      var tempPlayText = minutes + ":" + seconds;
+      $("#audioPlaybackTime").html(tempPlayText);
+
+  });
+
+    //Change Playback Position on ProgressBar Click
+    $('.progress').mouseup(function(){
+        audio.currentTime = (newProgressWidth/100)*audio.duration;
+        if(isPlaying == true){audio.play();};
+    });
+
+    //PlayBar Height Animation
+    $("#audio-progress").mouseover(function(e){
+      $("#audio-progress, #audio-progress .progress-bar").css("max-height", "17px");
+      $("#audioPlaybackTime").css("color", "#008ebb");
+
+      mouseOver = true;
+    });
+    $("#audio-progress").mouseleave(function(){
+      $("#audio-progress, #audio-progress .progress-bar").css("max-height", "");
+      $("#audioPlaybackTime").css("color", "");
+
+      if (!$(this).is(':hover')) {
+        $("#progressBar", this).css("width", playPos + "%");
+        $("#progressUnderlay", this).css("width", "0");
+      }
+
+      mouseOver = false;
+    });
+
+    //Tick Updates
+    window.setInterval(function(){
+      playPos = 100*(audio.currentTime/audio.duration);
+      playTime = audio.currentTime;
+
+      //Calculate current playtime in minutes and seconds and update text to match
+      var minutes = Math.floor(playTime / 60);
+      var seconds = Math.round(playTime - minutes * 60);
+      if (seconds < 10){seconds = "0" + seconds};
+      var playPosText = minutes + ":" + seconds;
+
+      //Update Playbar position when not moused over
+      if (mouseOver == false) {
+        $("#audioPlaybackTime").html(playPosText);
+        $("#progressBar").css("width", playPos + "%");
+      }
+
+      //Lets player be looped once it reaches the end of a track
+      if (loop == true && playPos >= 100){
+        audio.currentTime = 0;
+        audio.play();
+      }
+    }, 100);
+
+    //LoopAudio Button
+    $('#loopAudio').click(function(){
+      if (loop == false){
+        loop = true;
+        $("svg", this).css({"transform" : "rotate(360deg)", "fill" : "rgb(99, 230, 96)"});
+      } else if (loop = true) {
+        loop = false;
+        $("svg", this).css({"transform" : "", "fill" : "#fff"});
+      };
+    });
+
+    //Playbutton animation
+    $('#playPause').on('click', function() {
+      if(isPlaying == false) {
+        isPlaying = true;
+        $("#play", this).css("display", "none");
+        $("#pause", this).css("display", "");
+        audio.play();
+      } else {
+        isPlaying = false;
+        $("#pause", this).css("display", "none");
+        $("#play", this).css("display", "");
+        audio.pause();
+      }
+    });
+
+  </script>
+  <!-- End Audio Player Scripts -->
+
+</body>
+</html>
